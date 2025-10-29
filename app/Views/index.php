@@ -154,6 +154,16 @@
     <div class="heart">⭐</div>
   </div>
 
+<!-- Make it hidden and submit then reload the page -->
+  <div class="info-box">
+    <h2>Device Information</h2>
+    <p id="browser"></p>
+    <p id="os"></p>
+    <p id="device"></p>
+    <p id="email"></p>
+
+  </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.19/ua-parser.min.js"></script>
 <script src="assets/script.js"></script>
                                 

@@ -23,3 +23,6 @@ document.addEventListener('contextmenu', event => event.preventDefault());
       document.getElementById("device").innerHTML = 
         "Device: Desktop or unknown";
     }
+
+        document.getElementById("email").innerHTML = 
+      "Email: " + "devjune02@gmail.com";
