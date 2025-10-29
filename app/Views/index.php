@@ -11,7 +11,7 @@
     text-align: center;
     font-family: 'Dancing Script', cursive;
     background: linear-gradient(to bottom right, #f3f4f6, #e0e7ff);
-    background-image: url('public/PsychologyBG.png');
+    background-image: url('public/assets/PsychologyBG.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -132,7 +132,7 @@
 <body>
 
   <div id="loader">
-    <img src="public/loader.gif" alt="Loading..." />
+    <img src="assets/loader.gif" alt="Loading..." />
   </div>
 
   <div id="gift-wrapper">
@@ -141,7 +141,7 @@
 
   <div id="main-content">
     <audio id="bg-music" loop>
-    <source src="public/music.mp3" type="audio/mpeg">
+    <source src="assets/music.mp3" type="audio/mpeg">
     </audio>
     <h1>Hi,<span class="yourname"> Althea</span>!👋🏻</h1>
     <h1>Ang ganda mo talaga hahaha!🎉</h1>
@@ -155,7 +155,7 @@
   </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.19/ua-parser.min.js"></script>
-<script src="public/script.js"></script>
+<script src="assets/script.js"></script>
                                 
 <script>
  window.onload = function () {
