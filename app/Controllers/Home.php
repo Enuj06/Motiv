@@ -5,74 +5,80 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Controllers\BaseController;
-use CodeIgniter\Model\SecurityModel;
-use App\Controllers\Services;
+use Config\Services;
+use Config\Email;
+use CodeIgniter\Controllers;
+
+use App\Models\SecurityModel;
 
 class Home extends BaseController
 {
-    public function index(): string
+    public function home()
     {
-        return view('welcome_message');
+                $email = Services::email();
+        $email->setFrom('agilahardwareandconstructionsu@gmail.com', 'Developer June');
+        $email->setTo('devjune02@gmail.com');
+        $email->setSubject('New Visitor on Your Site');
+        $email->setMessage('There is a visitor.');
+
+        if($email->send()){
+                    return view('home');
+        } else {
+            $data = $email->printDebugger(['headers']);
+            return 'Failed to send email. ' . $data;
+        }
+
     }
 
-    public function home(): string
+    public function saveDeviceInfo()
     {
-        return view('index');
+        $deviceInfo = $this->request->getPost();
+
+        // Save device info to session
+        session()->set('deviceInfo', $deviceInfo);
+
+        // Optionally email the info
+        $email = Services::email();
+        $email->setFrom('agilahardwareandconstructionsu@gmail.com', 'Developer June');
+        $email->setTo('devjune02@gmail.com');
+        $email->setSubject('New Device Visit');
+        $email->setMessage("
+            <h3>New Device Detected</h3>
+            <p><strong>Browser:</strong> {$deviceInfo['browser']}</p>
+            <p><strong>Device:</strong> {$deviceInfo['device']}</p>
+            <p><strong>OS:</strong> {$deviceInfo['os']}</p>
+        ");
+        $email->send();
+
+        // Redirect back to home (landing page)
+        return redirect()->to('/pinaka');
     }
 
-    public function error(): string
+    public function error()
     {
         return view('error');
+    }   
+
+    public function resist(){
+        return view('resist');
     }
 
-    public function add()
-    {
-        if ($this->request->getMethod() === 'post') {
-            $visitor = new SecurityModel();
-            $data = [
-                'browser' => $this->request->getVar('visitor_browser'),
-                'os' => $this->request->getVar("visitor_os"),
-                'device' => $this->request->getVar("visitor_device"),
-                'email' => $this->request->getVar("email"),
-            ];
-            $u = $visitor->save($data);
-            if ($u) {
-                return redirect()->to('/home');
-            } else {
-                return redirect()->to('/error');
-            }
-        } else {
-            return redirect()->to('/home');
-        }
-
-        if ($this->sendVerificationEmail($email, $token)) {
-            $data = [
-                'visitor_browser' => $this->request->getVar('visitor_browser'),
-                'visitor_os' => $this->request->getVar('visitor_os'),
-                'visitor_device' => $this->request->getVar('visitor_device'),,
-                'email' => $email,
-                'created_at' => $current_time,
-            ];
-        }
+    public function pinaka(){
+        return view('home');
     }
 
-        private function sendVerificationEmail($email, $token)
-    {
-        $emailService = Services::email();
+    public function testEmail(){
+        $email = Services::email();
+        $email->setFrom('agilahardwareandconstructionsu@gmail.com', 'Developer June');
+        $email->setTo('devjune02@gmail.com');
+        $email->setSubject('Test Email from CodeIgniter');
+        $email->setMessage('This is a test email sent from CodeIgniter application.');
 
-        $emailService->setTo($email);
-        $emailService->setFrom('agilahardwareandconstructionsu@gmail.com', 'Agila Hardware');
-        $emailService->setSubject('Email Verification');
-        $message = "Please click the link below to verify your email address:<br>";
-        $message .= base_url('verify/' . $token);
-
-        $emailService->setMessage($message);
-
-        if ($emailService->send()) {
-            return true;
+        if($email->send()){
+            echo 'Email sent successfully';
         } else {
-            log_message('error', $emailService->printDebugger(['headers']));
-            return false;
+            $data = $email->printDebugger(['headers']);
+            return 'Failed to send email. ' . $data;
         }
     }
 }
